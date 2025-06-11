@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подводное портфолио</title>
+    <style>
+        
+        @import url('https://fonts.googleapis.com/css2?family=Tiny5&display=swap');
+        * {
+            font-family: "Tiny5", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h2{
+            color: rgb(118, 234, 255)
+        }
+        
+        body {
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+        }
+        
+        .wrapper {
+            position: relative;
+            background: linear-gradient(to bottom, 
+                #83d6f0, 
+                #4fb3d1 20%, 
+                #1e88a8 40%, 
+                #0d515c 60%, 
+                #052a33 80%, 
+                #000000);
+            height: 500vh;
+            transform: translateY(0);
+            transition: transform 5.1s cubic-bezier(0.4, -0.1, 0.4, 1.1);
+        }
+
+        .batyscaphe-overlay {
+            position: absolute;
+            top: -20vh;
+            left: -20vw;
+            width: 140vw;
+            height: 140vh;
+            pointer-events: none;
+            z-index: 1000;
+            transform: translateY(0);
+            transition: transform 5s cubic-bezier(0.4, -0.1, 0.4, 1.1);
+           
+        }
+        
+        .batyscaphe-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('./img/Batiscaphe.png');
+            background-size: cover;
+            background-repeat: repeat space;
+            background-position: center;
+            user-select: none;
+        }
+        
+        .nav-buttons {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 10px;
+            pointer-events: auto;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .control-panel {
+            position: absolute;
+            right: 18vw;
+            bottom: 5%;
+            transform: translateX(-50%);
+            z-index: 1100;
+            width: 600px;
+            height: 300px;
+            pointer-events: none;
+        }
+
+
+
+        .control-panel.right-panel {
+            position: fixed;
+            bottom: 50%;
+            transform: translateY(50%);
+            width: 200px;
+            height: 250px;
+            z-index: 1100;
+        }
+
+        .panel-base {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .nav-buttons.vertical-buttons {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            pointer-events: auto;
+        }
+        
+        .nav-btn:hover {
+            filter: drop-shadow(0 0 15px lime);
+        }
+        
+        .nav-btn:disabled, 
+        .nav-btn.disabled {
+            background-color: red;
+            filter: none;
+            pointer-events: none;
+        }
+
+        .control-panel.right-wall-panel {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%) translateX(70%);
+            width: 200px;
+            height: 500px;
+            z-index: 1100;
+            transition: transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            filter: drop-shadow(-5px 0 15px rgba(0, 255, 255, 0.6));
+        }
+
+        .control-panel.right-wall-panel:hover {
+            transform: translateY(-50%) translateX(30%);
+        }
+
+        .panel-base {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .nav-buttons.vertical-buttons {
+            position: absolute;
+            top: 100px;
+            right: 22px;
+            transform: translate(-50%, -50%) scale(1.40);
+            display: flex;
+            flex-direction: column; 
+            pointer-events: auto;
+            gap: 0.3px;
+        }
+
+        .nav-btn {
+            width: 65px;
+            height: 65px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: black;
+        }
+
+        .nav-btn:hover {
+            filter: drop-shadow(0 0 25px lime);
+            background-color: lime;
+        }
+
+        @keyframes button-glow {
+            0% { filter: drop-shadow(0 0 10px black); }
+            100% { filter: drop-shadow(0 0 25px lime); }
+        }
+
+        .nav-btn:not(.disabled):hover {
+            animation: button-glow 1s infinite alternate;
+        }
+
+        .nav-btn.disabled {
+            background-color: red;
+            filter: drop-shadow(0 0 25px red);
+            cursor: not-allowed;
+        }
+        
+        @keyframes button-pulse {
+            0% { filter: drop-shadow(0 0 5px lime); }
+            100% { filter: drop-shadow(0 0 15px lime); }
+        }
+
+        .nav-btn:not(:disabled):not(.disabled):hover {
+            animation: button-pulse 0.8s infinite alternate;
+        }
+
+        .right-panel {
+            transform: translateY(50%) translateX(30%);
+            transition: transform 0.5s ease;
+        }
+
+        .right-panel:hover {
+            transform: translateY(50%) translateX(0);
+        }
+
+        .ocean-layer {
+            position: absolute;
+            width: 100%;
+        }
+        
+        .surface {
+            height: 100vh;
+            background: linear-gradient(to bottom, rgba(131, 214, 240, 0.8), rgba(79, 179, 209, 0.6));
+        }
+        
+        .waves {
+            height: 990px;
+            background-image: url(./img/Sea_gif.gif);
+            background-size: cover;
+            background-repeat: no-repeat;
+            animation: bounce 2s ease-in-out alternate infinite;
+        }
+        
+        .deep-ocean {
+            top: 90vh;
+            height: 4000px;
+            background: linear-gradient(to bottom, 
+                rgba(13, 81, 92, 1), 
+                rgba(5, 42, 51, 1), 
+                rgba(0, 0, 0, 1));
+        }
+        .title{
+            margin: 18px;
+            max-width: 36vw;
+            animation: float-medium 5s ease-in-out infinite;
+        }
+
+        .portfolio-section {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        #bg_portfolo{
+            position: absolute;
+            min-height: 100vh;
+            background-repeat: no-repeat;
+            animation: float-light-bg 6.5s ease-in-out infinite;
+            user-select: none;
+        }
+
+        .portfolio-content{
+            display: flex;
+            flex-direction: column;
+            font-size: clamp(0.75rem, 0.6rem + 0.75vw, 1.5rem);
+            gap: 10px;
+            animation: float 6s ease-in-out infinite;
+            text-align: center;
+            padding: 10px;
+            max-width: clamp(300px, 50vw, 716px);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            z-index: 10;
+            transition: box-shadow 0.7s ease-in-out;
+        }
+
+        .portfolio-content:hover {
+            color: yellowgreen;
+            box-shadow: 0 0 30px rgba(136, 255, 0, 0.829);
+            cursor: default;
+            transition: box-shadow 0.7s ease-in-out;
+            transition: color 0.5s ease-in-out;
+        }
+
+        .portfolio-content .hi1{
+            color: rgba(217, 255, 5, 0.829);
+        }
+
+        .portfolio-content .hi2{
+            color: rgba(57, 238, 12, 0.829);
+        }
+
+        .portfolio-content .hi3{
+            color: rgba(30, 224, 198, 0.829);
+        }
+
+        .right-wall-panel:hover .panel-base {
+            animation: dive 0.5s ease-in-out;
+        }
+
+        @keyframes dive {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-10px); }
+        }
+        
+        .footer{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 2vh;
+        }
+
+        .bubble{
+            height: 10vw;
+            width: 10vw;
+            border-radius: 90;
+            cursor: pointer;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .bubble:hover{
+            transform: translateY(-1.8vh);
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .warning-message {
+            display: none;
+        }
+
+
+        #section1 .portfolio-content { animation-delay: 0s; }
+        #section2 .portfolio-content { animation-delay: 0.5s; }
+        #section3 .portfolio-content { animation-delay: 1s; }
+        #section4 .portfolio-content { animation-delay: 1.5s; }
+        #section5 .portfolio-content { animation-delay: 2s; }
+        
+        #section1 .portfolio-content { animation-name: float-light; }
+        #section2 .portfolio-content { animation-name: float-medium; }
+        #section3 .portfolio-content,
+        #section4 .portfolio-content,
+        #section5 .portfolio-content { animation-name: float-deep; }
+
+        #section1 { top: 0; }
+        @keyframes floatBackground {
+            0% { background-position: center 0%; }
+            50% { background-position: center 20%; }
+            100% { background-position: center 0%; }
+        }
+
+        #section2 {
+            top: 200vh;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+
+        #section3 { top: 400vh; }
+        #section4 { top: 600vh; }
+        #section5 { top: 800vh; }
+        
+        @keyframes float-light {
+            0%, 100% { transform: translateY(0) rotate(0.5deg); }
+            50% { transform: translateY(-15px) rotate(-0.5deg); }
+        }
+
+        @keyframes float-light-bg {
+            0%, 100% { transform: translateY(0) rotate(0.5deg); }
+            50% { transform: translateY(15px) rotate(0.5deg); }
+        }
+        
+        @keyframes float-medium {
+            0%, 100% { transform: translateY(0) rotate(1deg); }
+            50% { transform: translateY(-20px) rotate(-1deg); }
+        }
+        
+        @keyframes float-deep {
+            0%, 100% { transform: translateY(0) rotate(1.5deg); }
+            50% { transform: translateY(-25px) rotate(-1.5deg); }
+        }
+        
+        @keyframes bounce {
+            from { transform: translate3d(0, 40px, 0); }
+            to { transform: translate3d(0, 90px, 0); }
+        }
+
+
+
+
+        @media (width<=716px){
+            .wrapper{
+                display: none;
+            }
+
+            
+
+            .warning-message {
+                display: block;
+                background: #fff;
+                padding: 2rem;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                max-width: 90%;
+                margin: auto;
+            }
+
+            h1 {
+            color: #e74c3c;
+            margin-bottom: 1rem;
+            }
+        
+            p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            }
+        
+            .device-icon {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+                color: #3498db;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="warning-message">
+        <div class="device-icon">📱</div>
+        <h1>Извините!</h1>
+        <p>Эта страница не работает на экранах меньше 716px.</p>
+        <p>Пожалуйста, используйте устройство с большим экраном или поверните ваше устройство в ландшафтный режим.</p>
+    </div>
+    <div class="wrapper">
+        <div class="ocean-layer surface"></div>
+        <div class="ocean-layer waves"></div>
+        <div class="ocean-layer deep-ocean"></div>
+        
+        <div class="portfolio-section" id="section1">
+            <img class="title" src="./img/logo.png">
+            <div class="portfolio-content">
+               Портфолио @takoyakor
+            </div>
+        </div>
+        <div class="portfolio-section" id="section2">
+            <div class="portfolio-content">
+                <h2>Приветствую!</h2>
+                <p>Я — Максим, Front-end разработчик с тягой к креативу и нестандартным решениям.</p>
+            </div>
+            <img id="bg_portfolo" src="./img/v2_back.png">
+        </div>
+        <div class="portfolio-section" id="section3">
+            <div class="portfolio-content">
+                <h2>Опыт и навыки</h2>
+                <p>Я уверенно владею следующими инструментами фронтенда:
+                <ul style="list-style: none;">
+                        <li class="hi3">HTML — 3 года</li> 
+                        <li class="hi3">CSS/SASS — 3 года</li>
+                        <li class="hi2">React — 2 года</li>
+                        <li class="hi2">Next.js — 2 года</li>
+                        <li class="hi2">Windscribe — 2 года</li>
+                        <li class="hi1">RSuite — 1 год</li>
+                        <li class="hi1">Ant Design — 1 год</li>
+                </ul>
+                Этот стек позволяет мне собирать современные, отзывчивые интерфейсы, используя как проверенные временем технологии, так и свежие UI-фреймворки.</p>
+            </div>
+            <img id="bg_portfolo" src="./img/v3_back.png">
+        </div>
+        <div class="portfolio-section" id="section4">
+            <div class="portfolio-content">
+                <h2>Доп. умения</h2>
+                <p>Я уверенно понимаю технический английский как в письменной, так и в устной форме — это помогает мне работать с документацией и обучающими материалами без ограничений.</p>
+
+                <p> Хорошо ориентируюсь в графических редакторах Photoshop и GIMP, что пригодится для работы с визуальной частью интерфейсов. </p>
+
+                <p>Также быстро осваиваю новые инструменты и подходы, ведь постоянное развитие — важная часть моей работы как разработчика.</p>
+            </div>
+            <img id="bg_portfolo" src="./img/v4_back.png">
+        </div>
+        <div class="portfolio-section" id="section5">
+            <div class="portfolio-content">
+                <h2>Заключение</h2>
+                <p>Мой арсенал навыков помогает воплощать как профессиональные, так и дерзкие идеи. </p>
+                <p>Я — не просто разработчик, а восьмирукий энтузиаст, готовый схватиться за всё сразу и довести до блеска. </p>
+                <p>Если вы почувствовали, что нам по пути — ниже вы найдёте, как со мной связаться. Буду рад пообщаться! </p>
+                <div class="footer">
+                    <a href="https://rostov.hh.ru/resume/70c8a68cff0eaa2a3a0039ed1f566978664866"><img class="bubble" src="./img/tg_bubble.png"></a>
+                    <a href="https://t.me/Sadariun"><img class="bubble" src="./img/hh_bubble.png"></a>
+                </div>
+            </div>
+            <img id="bg_portfolo" src="./img/v5_back.png">
+        </div>
+        
+        <div class="batyscaphe-overlay">
+            <div class="batyscaphe-image"></div>
+            <div class="viewport"></div>
+            <div class="control-panel right-panel">
+                <img src="./img/arr_pad.png" class="panel-base" alt="Control Panel">
+                <div class="nav-buttons vertical-buttons">
+                    <img src="./img/arr_up.png" class="nav-btn" id="btnUp" alt="Up">
+                    <img src="./img/arr_dwn.png" class="nav-btn" id="btnDown" alt="Down">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wrapper = document.querySelector('.wrapper');
+            const batyscapheOverlay = document.querySelector('.batyscaphe-overlay');
+            const btnUp = document.getElementById('btnUp');
+            const btnDown = document.getElementById('btnDown');
+            const sections = document.querySelectorAll('.portfolio-section');
+            const btnFlash = document.getElementById('btnflsh');
+            // Восстановление позиции из localStorage
+            let currentSection = localStorage.getItem('currentSection') ? 
+                parseInt(localStorage.getItem('currentSection')) : 0;
+            const totalSections = sections.length;
+            let isAnimating = false;
+            
+            // Запрет скролла
+            function preventScroll(e) {
+                e.preventDefault();
+            }
+            window.addEventListener('wheel', preventScroll, { passive: false });
+            window.addEventListener('touchmove', preventScroll, { passive: false });
+            
+            // Навигация
+            function goToSection(index, saveToStorage = true) {
+                if (isAnimating || index < 0 || index >= totalSections) return;
+                
+                isAnimating = true;
+                currentSection = index;
+                const translateY = -currentSection * 200;
+                
+                wrapper.style.transform = `translateY(${translateY}vh)`;
+                batyscapheOverlay.style.transform = `translateY(${-translateY}vh)`;
+                
+                if (saveToStorage) {
+                    localStorage.setItem('currentSection', currentSection);
+                }
+                
+                setTimeout(() => {
+                    btnUp.classList.toggle('disabled', currentSection === 0);
+                    btnDown.classList.toggle('disabled', currentSection === totalSections - 1);
+                    isAnimating = false;
+                }, 1000);
+            }
+            
+            // Инициализация позиции
+            function initPosition() {
+                goToSection(currentSection, false);
+            }
+            
+            btnUp.addEventListener('click', () => goToSection(currentSection - 1));
+            btnDown.addEventListener('click', () => goToSection(currentSection + 1));
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowUp') goToSection(currentSection - 1);
+                if (e.key === 'ArrowDown') goToSection(currentSection + 1);
+            });
+            
+            initPosition();
+            
+            wrapper.addEventListener('transitionend', () => {
+                isAnimating = false;
+            });
+
+            let panel = document.querySelector('.right-wall-panel');
+            let isPanelHovered = false;
+
+            panel && panel.addEventListener('mouseenter', () => isPanelHovered = true);
+            panel && panel.addEventListener('mouseleave', () => isPanelHovered = false);
+
+            window.addEventListener('scroll', () => {
+                if(!isPanelHovered && panel) {
+                    panel.style.transform = `translateY(-50%) translateX(70%)`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
