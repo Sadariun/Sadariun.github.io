@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" href="./img/favicon.ico" type="image/x-icon">
     <title>Погружение</title>
     <style>
@@ -23,6 +23,17 @@
             overflow: hidden;
             font-family: 'Arial', sans-serif;
             background-color: #000;
+            margin: 0;
+            min-height: -webkit-fill-available;
+        }
+
+        body > .scroll-box {
+            position: relative;
+            left: 0;
+            right: 0;
+            height: 100%;
+            max-height: 100vh;
+            overflow-y: auto;
         }
         
         .wrapper {
@@ -519,6 +530,8 @@
                 parseInt(localStorage.getItem('currentSection')) : 0;
             const totalSections = sections.length;
             let isAnimating = false;
+
+            
             
             // Запрет скролла
             function preventScroll(e) {
